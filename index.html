@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Geboorte Tracker 2026</title>
 
     <link rel="icon" type="image/png" href="icon.png">
@@ -20,90 +20,74 @@
             --a-color: #2ecc71; --v-color: #f1c40f;
             --holiday: #e67e22; --deadline: #ff4757;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-body); color: var(--text-main); padding: env(safe-area-inset-top) 20px 20px 20px; margin: 0; }
-        .container { max-width: 1200px; margin: auto; background: var(--bg-container); padding: 25px; border-radius: 16px; }
-        
-        .setup-row { display: flex; gap: 20px; margin-bottom: 20px; align-items: center; justify-content: center; background: #252525; padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; padding: 20px; padding-top: calc(20px + env(safe-area-inset-top)); }
+        .container { max-width: 1000px; margin: auto; background: var(--bg-container); padding: 20px; border-radius: 16px; border: 1px solid var(--border); }
+        .setup-row { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; justify-content: center; background: #252525; padding: 15px; border-radius: 12px; flex-wrap: wrap; }
         .setup-row input { background: #333; border: 1px solid #555; color: #fff; padding: 8px; border-radius: 5px; }
-
-        .dashboard { display: flex; justify-content: space-around; background: #252525; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); }
-        .stat-box { text-align: center; flex: 1; border-right: 1px solid var(--border); }
-        .stat-box:last-child { border-right: none; }
-        .stat-box strong { font-size: 1.2em; display: block; color: #fff; }
-        
-        .controls { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; gap: 8px; }
-        .btn { padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; border: 1px solid var(--border); background: #2a2a2a; color: #fff; transition: 0.2s; }
+        .dashboard { display: flex; justify-content: space-around; background: #252525; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); gap: 10px; }
+        .stat-box { text-align: center; flex: 1; }
+        .stat-box strong { font-size: 1.1em; display: block; color: #fff; margin-top: 4px; }
+        .controls { text-align: center; margin-bottom: 25px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .btn { padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; border: 1px solid var(--border); background: #2a2a2a; color: #fff; }
         .btn.active[data-mode="s"] { background: var(--s-color); }
         .btn.active[data-mode="a"] { background: var(--a-color); }
         .btn.active[data-mode="v"] { background: var(--v-color); color: #000; }
-        .btn-pdf { background: #fff !important; color: #000 !important; margin-left: 10px; }
-
+        .btn-pdf { background: #fff !important; color: #000 !important; }
         .months-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .month-card { background: #252525; border: 1px solid var(--border); padding: 15px; border-radius: 10px; }
         .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .day { aspect-ratio: 1/1; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 0.8em; border-radius: 4px; cursor: pointer; position: relative; border: 1px solid transparent; }
+        .day { aspect-ratio: 1/1; background: #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 0.85em; border-radius: 4px; cursor: pointer; position: relative; }
         .day-label { font-size: 0.7em; text-align: center; color: var(--text-muted); padding-bottom: 5px; }
         .empty { visibility: hidden; }
         .no-click { cursor: default; background: #1a1a1a; color: #444; }
         .feestdag { color: var(--holiday); }
-        .label { font-size: 7px; position: absolute; bottom: 2px; width: 100%; text-align: center; font-weight: bold; text-transform: uppercase; }
-        
+        .label { font-size: 7px; position: absolute; bottom: 2px; width: 100%; text-align: center; font-weight: bold; }
         .s-pick { background: var(--s-color) !important; color: white; }
         .a-pick { background: var(--a-color) !important; color: white; }
         .v-pick { background: var(--v-color) !important; color: black; }
-        .past-deadline { border: 1.5px solid var(--deadline) !important; }
-
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; color: black; }
-            .container { background: white; }
-            .dashboard { background: #eee; border: 1px solid #ccc; color: black; }
-            .dashboard strong { color: black !important; }
-            #print-report { display: block !important; }
-        }
+        .past-deadline { border: 1px solid var(--deadline) !important; }
+        @media print { .no-print { display: none !important; } body { background: white; color: black; padding: 0; } #print-report { display: block !important; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #ccc; padding: 8px; } }
         #print-report { display: none; color: black; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1 class="no-print" style="text-align: center; margin-top: 0;">👶 Geboorte Tracker 2026</h1>
+    <h1 class="no-print" style="text-align: center; margin-bottom: 20px;">👶 Verlof Tracker 2026</h1>
     
     <div class="setup-row no-print">
-        <label>Geboortedatum baby: </label>
+        <label>Geboortedatum: </label>
         <input type="date" id="birthdate" onchange="updateDeadline()">
-        <span id="deadline-info" style="font-size: 0.85em; color: var(--deadline)"></span>
+        <span id="deadline-info" style="color: var(--deadline); font-size: 0.8em;"></span>
     </div>
 
     <div class="dashboard">
-        <div class="stat-box"><span style="color:var(--s-color)">Standaard</span><strong id="s-hrs">0 / 32u</strong></div>
-        <div class="stat-box"><span style="color:var(--a-color)">Aanvullend</span><strong id="a-hrs">0 / 160u</strong></div>
-        <div class="stat-box"><span style="color:var(--v-color)">Vakantie Over</span><strong id="v-rem">104.75u</strong></div>
+        <div class="stat-box"><span style="color:var(--s-color)">100%</span><strong id="s-hrs">0u</strong></div>
+        <div class="stat-box"><span style="color:var(--a-color)">70%</span><strong id="a-hrs">0u</strong></div>
+        <div class="stat-box"><span style="color:var(--v-color)">Vakantie</span><strong id="v-rem">104.75u</strong></div>
     </div>
 
     <div class="controls no-print">
-        <button class="btn active" data-mode="s" onclick="setMode('s')">Standaard</button>
-        <button class="btn" data-mode="a" onclick="setMode('a')">Aanvullend</button>
+        <button class="btn active" data-mode="s" onclick="setMode('s')">100%</button>
+        <button class="btn" data-mode="a" onclick="setMode('a')">70%</button>
         <button class="btn" data-mode="v" onclick="setMode('v')">Vakantie</button>
-        <button class="btn btn-pdf" onclick="window.print()">🖨️ PDF</button>
+        <button class="btn btn-pdf" onclick="window.print()">PDF</button>
     </div>
 
     <div class="months-grid no-print" id="months-grid"></div>
 
     <div id="print-report">
-        <h2>Officiële Verlofplanning 2026</h2>
+        <h2>Verlofplanning 2026</h2>
         <div id="report-table-container"></div>
     </div>
 </div>
 
 <script>
     let currentMode = 's';
-    let savedData = JSON.parse(localStorage.getItem('verlofData_2026_Smart')) || {};
+    let savedData = JSON.parse(localStorage.getItem('verlof_data_v1')) || {};
     const startVakantieUren = 104.75;
     const months = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"];
-    const feestdagen = {"0-1":"Nieuwjaar","3-3":"Goede Vrijdag","3-5":"1e Paasdag","3-6":"2e Paasdag","3-27":"Koningsdag","4-4":"Bevrijdingsdag","4-14":"Hemelvaart","4-24":"1e Pinksteren","4-25":"2e Pinksteren","11-25":"1e Kerstdag","11-26":"2e Kerstdag"};
+    const feestdagen = {"0-1":"Nieuwjaar","3-3":"Goede Vrijdag","3-5":"Pasen","3-6":"Pasen","3-27":"Koningsdag","4-4":"Bevrijding","4-14":"Hemelvaart","4-24":"Pinksteren","4-25":"Pinksteren","11-25":"Kerst","11-26":"Kerst"};
 
     function setMode(mode) {
         currentMode = mode;
@@ -112,84 +96,72 @@
     }
 
     function updateDeadline() {
-        const birthVal = document.getElementById('birthdate').value;
-        if(!birthVal) return;
-        const birthDate = new Date(birthVal);
-        const deadlineDate = new Date(birthDate);
-        deadlineDate.setDate(birthDate.getDate() + 182); 
-        document.getElementById('deadline-info').innerText = `Deadline: ${deadlineDate.toLocaleDateString('nl-NL')}`;
-        localStorage.setItem('birthDate_2026', birthVal);
-        init(); 
+        const val = document.getElementById('birthdate').value;
+        if(!val) return;
+        const d = new Date(val); d.setDate(d.getDate() + 182);
+        document.getElementById('deadline-info').innerText = "Deadline: " + d.toLocaleDateString('nl-NL');
+        localStorage.setItem('baby_birth', val);
+        render();
     }
 
-    function init() {
+    function render() {
         const grid = document.getElementById('months-grid');
         grid.innerHTML = '';
-        const birthVal = localStorage.getItem('birthDate_2026');
-        const deadlineDate = birthVal ? new Date(new Date(birthVal).getTime() + 182 * 24 * 60 * 60 * 1000) : null;
+        const birth = localStorage.getItem('baby_birth');
+        const deadLine = birth ? new Date(new Date(birth).getTime() + 182*24*60*60*1000) : null;
 
         for (let m = 0; m < 12; m++) {
-            let mCard = document.createElement('div'); mCard.className = 'month-card';
-            mCard.innerHTML = `<div style="font-weight:bold; margin-bottom:10px">${months[m]}</div>`;
+            let card = document.createElement('div'); card.className = 'month-card';
+            card.innerHTML = `<div style="font-weight:bold;margin-bottom:10px">${months[m]}</div>`;
             let cal = document.createElement('div'); cal.className = 'calendar';
-            ["Ma","Di","Wo","Do","Vr","Za","Zo"].forEach(d => cal.innerHTML += `<div class="day-label">${d}</div>`);
+            ["Ma","Di","Wo","Do","Vr","Za","Zo"].forEach(h => cal.innerHTML += `<div class="day-label">${h}</div>`);
             let shift = (new Date(2026, m, 1).getDay() + 6) % 7;
-            for(let s=0; s<shift; s++) cal.innerHTML += `<div class="day empty"></div>`;
-            let daysInMonth = new Date(2026, m + 1, 0).getDate();
-            for(let d=1; d<=daysInMonth; d++) {
-                let dayId = `${m}-${d}`; let date = new Date(2026, m, d);
-                let dayEl = document.createElement('div'); dayEl.className = 'day'; dayEl.innerHTML = `<span>${d}</span>`;
-                if(deadlineDate && date > deadlineDate) dayEl.classList.add('past-deadline');
-                if (feestdagen[dayId]) { dayEl.classList.add('feestdag','no-click'); dayEl.innerHTML += `<span class="label">${feestdagen[dayId]}</span>`; }
-                else if (date.getDay() === 5) { dayEl.classList.add('vrijdag','no-click'); dayEl.innerHTML += `<span class="label">Vrij</span>`; }
-                else if (date.getDay() === 0 || date.getDay() === 6) { dayEl.classList.add('weekend','no-click'); }
+            for(let s=0; s<shift; s++) cal.innerHTML += `<div class="empty"></div>`;
+            let days = new Date(2026, m+1, 0).getDate();
+            for(let d=1; d<=days; d++) {
+                let id = `${m}-${d}`; let dt = new Date(2026, m, d);
+                let el = document.createElement('div'); el.className = 'day'; el.innerHTML = `<span>${d}</span>`;
+                if(deadLine && dt > deadLine) el.classList.add('past-deadline');
+                if(feestdagen[id]) { el.classList.add('no-click','feestdag'); el.innerHTML += `<span class="label">${feestdagen[id]}</span>`; }
+                else if(dt.getDay()===5) { el.classList.add('no-click'); el.style.color='#555'; el.innerHTML += `<span class="label">Vrij</span>`; }
+                else if(dt.getDay()===0 || dt.getDay()===6) { el.classList.add('no-click'); el.style.color='#444'; }
                 else {
-                    if(savedData[dayId]) dayEl.classList.add(savedData[dayId] + '-pick');
-                    dayEl.onclick = () => {
-                        if (savedData[dayId] === currentMode) {
-                            dayEl.classList.remove(currentMode + '-pick');
-                            delete savedData[dayId];
-                        } else {
-                            dayEl.classList.remove('s-pick', 'a-pick', 'v-pick');
-                            dayEl.classList.add(currentMode + '-pick');
-                            savedData[dayId] = currentMode;
-                        }
-                        localStorage.setItem('verlofData_2026_Smart', JSON.stringify(savedData));
-                        updateStats();
+                    if(savedData[id]) el.classList.add(savedData[id]+'-pick');
+                    el.onclick = () => {
+                        if(savedData[id] === currentMode) { delete savedData[id]; }
+                        else { savedData[id] = currentMode; }
+                        localStorage.setItem('verlof_data_v1', JSON.stringify(savedData));
+                        render();
                     };
                 }
-                cal.appendChild(dayEl);
+                cal.appendChild(el);
             }
-            mCard.appendChild(cal); grid.appendChild(mCard);
+            card.appendChild(cal); grid.appendChild(card);
         }
         updateStats();
     }
 
     function updateStats() {
-        let s = 0, a = 0, v = 0;
-        let tableHtml = '<table><tr><th>Datum</th><th>Type</th><th>Uren</th></tr>';
-        let sortedKeys = Object.keys(savedData).sort((x,y) => {
-            let [m1, d1] = x.split('-').map(Number); let [m2, d2] = y.split('-').map(Number);
-            return new Date(2026, m1, d1) - new Date(2026, m2, d2);
+        let s=0, a=0, v=0;
+        let rows = "";
+        Object.keys(savedData).sort((x,y)=>{
+            let [m1,d1]=x.split('-').map(Number); let [m2,d2]=y.split('-').map(Number);
+            return new Date(2026,m1,d1)-new Date(2026,m2,d2);
+        }).forEach(id=>{
+            let [m,d] = id.split('-'); let type = savedData[id];
+            if(type==='s') s++; if(type==='a') a++; if(type==='v') v++;
+            rows += `<tr><td>${d} ${months[m]}</td><td>${type==='s'?'100%':type==='a'?'70%':'Vakantie'}</td><td>8u</td></tr>`;
         });
-        sortedKeys.forEach(id => {
-            let [m, d] = id.split('-'); let val = savedData[id];
-            if(val === 's') s++; if(val === 'a') a++; if(val === 'v') v++;
-            tableHtml += `<tr><td>${d} ${months[m]} 2026</td><td>${val==='s'?'Standaard':val==='a'?'Aanvullend':'Vakantie'}</td><td>8.00</td></tr>`;
-        });
-        document.getElementById('s-hrs').innerText = `${s * 8} / 32u`;
-        document.getElementById('a-hrs').innerText = `${a * 8} / 160u`;
-        document.getElementById('v-rem').innerText = `${(startVakantieUren - (v * 8)).toFixed(2)}u`;
-        document.getElementById('report-table-container').innerHTML = tableHtml + '</table>';
+        document.getElementById('s-hrs').innerText = (s*8)+"u";
+        document.getElementById('a-hrs').innerText = (a*8)+"u";
+        document.getElementById('v-rem').innerText = (startVakantieUren-(v*8)).toFixed(2)+"u";
+        document.getElementById('report-table-container').innerHTML = `<table><tr><th>Datum</th><th>Type</th><th>Uren</th></tr>${rows}</table>`;
     }
 
     window.onload = () => {
-        const savedBirth = localStorage.getItem('birthDate_2026');
-        if(savedBirth) {
-            document.getElementById('birthdate').value = savedBirth;
-            updateDeadline();
-        }
-        init();
+        const b = localStorage.getItem('baby_birth');
+        if(b) { document.getElementById('birthdate').value = b; updateDeadline(); }
+        render();
     };
 </script>
 </body>
